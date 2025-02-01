@@ -39,7 +39,7 @@ public class EmployeeController {
 
         model.addAttribute("employee", new Employee());
 
-        return "employees/save-employee";
+        return "employees/employee-form";
     }
 
     @PostMapping("/save")
