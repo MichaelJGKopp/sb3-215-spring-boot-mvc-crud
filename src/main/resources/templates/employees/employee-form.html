@@ -20,9 +20,10 @@
 
     <form action="#" th:action="@{/employees/save}" th:object="${employee}" method="POST">
 
-        <!--    margin bottom 4 and width 25%    -->
+        <!--    hidden field for update to forward the id    -->
         <input type="hidden" th:field="*{id}">
 
+        <!--    margin bottom 4 and width 25%    -->
         <input type="text" th:field="*{firstName}" placeholder="First name" class="form-control mb-4 w-25">
 
         <input type="text" th:field="*{lastName}" placeholder="Last name" class="form-control mb-4 w-25">
