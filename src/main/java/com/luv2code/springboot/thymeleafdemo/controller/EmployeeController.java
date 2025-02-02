@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +51,22 @@ public class EmployeeController {
         employeeService.save(employee);
 
         // use a redirect to prevent duplicate submissions
+        return "redirect:/employees/list";
+    }
+
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("employeeId") int employeeId, Model model) {
+
+        model.addAttribute("employee", employeeService.findById(employeeId));
+
+        return "employees/employee-form";
+    }
+
+    @GetMapping("/showFormForDelete")
+    public String showFormForDelete(@RequestParam("employeeId") int employeeId) {
+
+        employeeService.deleteById(employeeId);
+
         return "redirect:/employees/list";
     }
 }
