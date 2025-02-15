@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import java.util.Arrays;
 
 @Aspect
 @Order(1)
@@ -17,39 +18,19 @@ public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Before("com.luv2code.springboot.thymeleafdemo.aspect.AOPExpression.controllerDaoServicePackages()")
-    public void beforeMethod(JoinPoint joinPoint) {
-
-        // build string with method signature and arguments
-        StringBuilder result = new StringBuilder("=> @Before: " + joinPoint.getSignature().toString() + " ");
-
-        Object[] args = joinPoint.getArgs();
-
-        if (args.length > 0) {
-            result.append("args: ");
-
-            for (Object arg : joinPoint.getArgs()) {
-                result.append(arg.toString()).append(" ");
-            }
-        }
-
-        // log the method we are calling
-        logger.info(result.toString());
+    public void logBefore(JoinPoint joinPoint) {
+        logger.info("Entering method: {} with arguments: {}",
+                joinPoint.getSignature(),
+                Arrays.toString(joinPoint.getArgs()));
     }
 
     @AfterReturning(
             pointcut = "com.luv2code.springboot.thymeleafdemo.aspect.AOPExpression.controllerDaoServicePackages()",
-            returning = "returning")
-    public void afterReturningMethod(JoinPoint joinPoint, Object returning) {
-
-        // build string with method signature and arguments
-        StringBuilder result = new StringBuilder("=> @AfterReturning: " + joinPoint.getSignature().toString() + " ")
-                .append("returning: ").append(returning);
-
-        for (Object arg : joinPoint.getArgs()) {
-            result.append(arg.toString()).append(System.lineSeparator());
-        }
-
-        // log the method we are calling
-        logger.info(result.toString());
+            returning = "result")
+    public void logAfterReturning(JoinPoint joinPoint, Object result) {
+        logger.info("Exiting method: {} with return value: {} and arguments: {}",
+                joinPoint.getSignature(),
+                result,
+                Arrays.toString(joinPoint.getArgs()));
     }
 }
